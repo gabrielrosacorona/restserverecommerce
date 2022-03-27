@@ -13,6 +13,7 @@ class Server{
 
         // Endpoints
         this.usuariosPath = '/api/usuarios';
+        this.authPath = '/api/auth';
 
         // Connect DB
         this.connectDB();
@@ -41,6 +42,7 @@ class Server{
 
     routes(){
 
+        this.app.use(this.authPath, require('../routes/auth'))
         this.app.use(this.usuariosPath, require('../routes/usuarios'))
     
     };

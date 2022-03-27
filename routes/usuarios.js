@@ -5,7 +5,13 @@ const { usuariosGet,
         usuariosPost, 
         usuariosDelete } = require('../controllers/usuarios');
 
-const { validarCampos } = require('../middlewares/validar-campos');
+const {
+   validarCampos,
+   isAdminRole,
+   hasARole,
+   validateJWT
+} = require('../middlewares');
+
 const { isValidRole, 
     isExistEmail, 
     isExistUserById } = require('../helpers/db-validators');
@@ -32,6 +38,9 @@ router.post('/', [
 ],usuariosPost);
 
 router.delete('/:id', [
+    validateJWT,
+    // isAdminRole,
+    hasARole('VENTAS_ROLE', 'ADMIN_ROLE', 'NOSE_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom(isExistUserById),
     validarCampos
